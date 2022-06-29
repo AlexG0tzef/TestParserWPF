@@ -15,11 +15,14 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Column="0" Width="300" Height="30" Grid.Row="0" Margin="20,0,0,0" Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
         <Button Grid.Column="1" Width="200" Height="30" Grid.Row="0" Content="Выбрать файл" Command="{Binding LoadCommand}"/>
         <ListBox Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding ListData, UpdateSourceTrigger=PropertyChanged}"></ListBox>
-        <Button Grid.Column="0"  Width="200" Height="30" Grid.Row="2" Content="Старт" Command="{Binding StartCommand}"/>
-        <Button Grid.Column="1" Width="200" Height="30" Grid.Row="2" Content="Стоп" Command="{Binding StopCommand}"/>
+        <TextBlock Grid.Column="0" Text="Максимальное кол-во тегов a : " Height="30" Grid.Row="2"></TextBlock>
+        <TextBlock Grid.Column="1" Text="{Binding MaxTagA, UpdateSourceTrigger=PropertyChanged}" Height="30" Grid.Row="2"></TextBlock>
+        <Button Grid.Column="0"  Width="200" Height="30" Grid.Row="3" Content="Старт" Command="{Binding StartCommand}"/>
+        <Button Grid.Column="1" Width="200" Height="30" Grid.Row="3" Content="Стоп" Command="{Binding StopCommand}"/>
     </Grid>
 </UserControl>

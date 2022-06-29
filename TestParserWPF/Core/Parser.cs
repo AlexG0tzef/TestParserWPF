@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace TestParserWPF.Core
 {
@@ -91,24 +92,31 @@ namespace TestParserWPF.Core
         }
         private async void Work()
         {
-            foreach (var url in ListUrl) 
+            if (ListUrl != null)
             {
-                if (!isActive)
+                foreach (var url in ListUrl)
                 {
-                    OnCompleted?.Invoke(this);
-                    return;
+                    if (!isActive)
+                    {
+                        OnCompleted?.Invoke(this);
+                        return;
+                    }
+                    CurURL = url;
+                    var source = await loader.GetSourceByUrl(url);
+                    var domParser = new HtmlParser();
+
+                    var document = await domParser.ParseDocumentAsync(source);
+                    var result = parser.Parse(document);
+
+                    OnNewData?.Invoke(this, result);
                 }
-                CurURL = url;
-                var source = await loader.GetSourceByUrl(url);
-                var domParser = new HtmlParser();
-
-                var document = await domParser.ParseDocumentAsync(source);
-                var result = parser.Parse(document);
-
-                OnNewData?.Invoke(this, result);
+                OnCompleted?.Invoke(this);
+                isActive = false;
             }
-            OnCompleted?.Invoke(this);
-            isActive = false;
+            else
+            {
+                MessageBox.Show("Не выбран файл!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         #region INotifyPropertyChanged

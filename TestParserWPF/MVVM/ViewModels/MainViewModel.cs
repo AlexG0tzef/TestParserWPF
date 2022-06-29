@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using TestParserWPF.Commands;
 using TestParserWPF.Core;
@@ -32,9 +33,12 @@ namespace TestParserWPF.MVVM.ViewModels
             get => _listUrl;
             set
             {
-                _listUrl = value;
-                Parser.ListUrl = value;
-                OnPropertyChanged(nameof(ListUrl));
+                if (value != _listUrl)
+                {
+                    _listUrl = value;
+                    Parser.ListUrl = value;
+                    OnPropertyChanged(nameof(ListUrl));
+                }
             }
         }
         #endregion
@@ -65,6 +69,19 @@ namespace TestParserWPF.MVVM.ViewModels
         }
         #endregion
 
+        #region MaxTagA
+        private int _maxTagA = 0;
+        public int MaxTagA
+        {
+            get => _maxTagA;
+            set
+            {
+                _maxTagA = value;
+                OnPropertyChanged(nameof(MaxTagA));
+            }
+        }
+        #endregion
+
         #region Commands
         public ICommand StartCommand { get; set; }
         public ICommand StopCommand { get; set; }
@@ -88,11 +105,15 @@ namespace TestParserWPF.MVVM.ViewModels
         private void Parser_OnNewData(object arg1, List<string> arg2)
         {
             ListData.Add($"{Parser.CurURL} - {arg2.Count}");
+            if (arg2.Count > MaxTagA)
+            {
+                MaxTagA = arg2.Count;
+            }
         }
 
         private void Parser_OnCompleted(object obj)
         {
-            
+            MessageBox.Show("Работа закончена!", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

@@ -34,7 +34,9 @@ namespace TestParserWPF.Commands
         {
             string[]? answ = null;
 
+            
             OpenFileDialog dial = new OpenFileDialog();
+            dial.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
             dial.ShowDialog();
             return dial.FileNames;
         }
